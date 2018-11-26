@@ -1,6 +1,6 @@
 import React from "react";
 import { bindActionCreators } from "redux";
-import { initStore, addCount } from "../lib/store";
+import { initStore } from "../lib/store";
 import withRedux from "next-redux-wrapper";
 
 import withApollo from "../lib/withApollo";
@@ -15,8 +15,7 @@ import UpdateButton from "../components/UpdateButton";
 
 class Index extends React.Component {
   static getInitialProps({ store, isServer }) {
-    store.dispatch(addCount());
-
+    // store.dispatch(init());
     return { isServer };
   }
 
@@ -34,9 +33,7 @@ class Index extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => {
-  return {
-    addCount: bindActionCreators(addCount, dispatch)
-  };
+  return {};
 };
 
 export default withApollo(

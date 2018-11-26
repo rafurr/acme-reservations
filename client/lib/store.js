@@ -3,7 +3,6 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunkMiddleware from "redux-thunk";
 
 const exampleInitialState = {
-  count: 0,
   id: "",
   name: null,
   hotelName: null,
@@ -12,7 +11,6 @@ const exampleInitialState = {
 };
 
 export const actionTypes = {
-  ADD: "ADD",
   SET_ID: "SET_ID",
   SET_NAME: "SET_NAME",
   SET_HOTEL_NAME: "SET_HOTEL_NAME",
@@ -22,11 +20,6 @@ export const actionTypes = {
 //REDUCERS
 export const reducer = (state = exampleInitialState, action) => {
   switch (action.type) {
-    case actionTypes.ADD:
-      return {
-        ...state,
-        count: state.count + 1
-      };
     case actionTypes.SET_ID:
       return {
         ...state,
@@ -60,10 +53,6 @@ export const reducer = (state = exampleInitialState, action) => {
 };
 
 // ACTIONS
-export const addCount = () => dispatch => {
-  return dispatch({ type: actionTypes.ADD });
-};
-
 export const setID = value => dispatch => {
   return dispatch({ type: actionTypes.SET_ID, payload: value });
 };

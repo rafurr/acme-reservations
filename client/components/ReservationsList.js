@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { addCount, setID } from "../lib/store";
+import { setID } from "../lib/store";
 
 import { graphql, compose } from "react-apollo";
 import gql from "graphql-tag";
@@ -95,7 +95,6 @@ const mapStateToProps = ({ id }) => ({ id });
 
 const mapDispatchToProps = dispatch => {
   return {
-    addCount: bindActionCreators(addCount, dispatch),
     setID: bindActionCreators(setID, dispatch)
   };
 };
