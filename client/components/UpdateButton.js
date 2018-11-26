@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { setID } from "../lib/store";
 
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
@@ -31,9 +29,17 @@ const updateReservation = gql`
   }
 `;
 
-class UpdateButton extends Component {
-  canUpdate = () => {
-    const { id, name, hotelName, arrivalDate, departureDate } = this.props;
+const UpdateButton = props => {
+  const canUpdate = () => {
+    const {
+      selectedReservationData: {
+        id,
+        name,
+        hotelName,
+        arrivalDate,
+        departureDate
+      }
+    } = props;
 
     return (
       id &&
@@ -46,44 +52,38 @@ class UpdateButton extends Component {
     );
   };
 
-  handleUpdate = () => {
-    const { id, name, hotelName, arrivalDate, departureDate } = this.props;
-    this.props.updateReservation(
+  const handleUpdate = () => {
+    const {
+      selectedReservationData: {
+        id,
+        name,
+        hotelName,
+        arrivalDate,
+        departureDate
+      }
+    } = props;
+
+    props.updateReservation(
       id,
       name.trim(),
       hotelName.trim(),
       arrivalDate,
       departureDate
     );
-    this.props.setID("");
   };
 
-  render() {
-    if (!this.canUpdate()) {
-      return null;
-    }
-    return <button onClick={this.handleUpdate}>Update Reservation</button>;
+  if (!canUpdate()) {
+    return null;
   }
-}
+  return <button onClick={handleUpdate}>Update Reservation</button>;
+};
 
-const mapStateToProps = ({
-  id,
-  name,
-  hotelName,
-  arrivalDate,
-  departureDate
-}) => ({
-  id,
-  name,
-  hotelName,
-  arrivalDate,
-  departureDate
+const mapStateToProps = ({ selectedReservationData }) => ({
+  selectedReservationData
 });
 
 const mapDispatchToProps = dispatch => {
-  return {
-    setID: bindActionCreators(setID, dispatch)
-  };
+  return {};
 };
 
 export default connect(

@@ -3,49 +3,39 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunkMiddleware from "redux-thunk";
 
 const exampleInitialState = {
-  id: "",
-  name: null,
-  hotelName: null,
-  arrivalDate: null,
-  departureDate: null
+  addReservationData: {
+    name: "",
+    hotelName: "",
+    arrivalDate: "",
+    departureDate: ""
+  },
+  selectedReservationData: {
+    id: "",
+    name: null,
+    hotelName: null,
+    arrivalDate: null,
+    departureDate: null,
+    isEditing: false
+  }
 };
 
 export const actionTypes = {
-  SET_ID: "SET_ID",
-  SET_NAME: "SET_NAME",
-  SET_HOTEL_NAME: "SET_HOTEL_NAME",
-  SET_NAME_AND_HOTEL_NAME: "SET_NAME_AND_HOTEL_NAME"
+  SET_ADD_RESERVATION_DATA: "SET_ADD_RESERVATION_DATA",
+  SET_SELECTED_RESERVATION_DATA: "SET_SELECTED_RESERVATION_DATA"
 };
 
 //REDUCERS
 export const reducer = (state = exampleInitialState, action) => {
   switch (action.type) {
-    case actionTypes.SET_ID:
+    case actionTypes.SET_ADD_RESERVATION_DATA:
       return {
         ...state,
-        id: action.payload,
-        name: null,
-        hotelName: null,
-        arrivalDate: null,
-        departureDate: null
+        addReservationData: action.payload
       };
-    case actionTypes.SET_NAME:
+    case actionTypes.SET_SELECTED_RESERVATION_DATA:
       return {
         ...state,
-        name: action.payload
-      };
-    case actionTypes.SET_HOTEL_NAME:
-      return {
-        ...state,
-        hotelName: action.payload
-      };
-    case actionTypes.SET_NAME_AND_HOTEL_NAME:
-      return {
-        ...state,
-        name: action.payload.name,
-        hotelName: action.payload.hotelName,
-        arrivalDate: action.payload.arrivalDate,
-        departureDate: action.payload.departureDate
+        selectedReservationData: action.payload
       };
     default:
       return state;
@@ -53,21 +43,16 @@ export const reducer = (state = exampleInitialState, action) => {
 };
 
 // ACTIONS
-export const setID = value => dispatch => {
-  return dispatch({ type: actionTypes.SET_ID, payload: value });
-};
-
-export const setName = value => dispatch => {
-  return dispatch({ type: actionTypes.SET_NAME, payload: value });
-};
-
-export const setHotelName = value => dispatch => {
-  return dispatch({ type: actionTypes.SET_HOTEL_NAME, payload: value });
-};
-
-export const setNameAndHotelName = value => dispatch => {
+export const setAddReservationData = value => dispatch => {
   return dispatch({
-    type: actionTypes.SET_NAME_AND_HOTEL_NAME,
+    type: actionTypes.SET_ADD_RESERVATION_DATA,
+    payload: value
+  });
+};
+
+export const setSelectedReservationData = value => dispatch => {
+  return dispatch({
+    type: actionTypes.SET_SELECTED_RESERVATION_DATA,
     payload: value
   });
 };
