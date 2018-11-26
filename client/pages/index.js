@@ -1,13 +1,12 @@
 import React from "react";
-import { bindActionCreators } from "redux";
-import { initStore } from "../lib/store";
 import withRedux from "next-redux-wrapper";
 
 import withApollo from "../lib/withApollo";
 
+import { initStore } from "../lib/store";
+
 import App from "../components/App";
 import Header from "../components/Header";
-
 import AddReservationForm from "../components/AddReservationForm";
 import ReservationsList from "../components/ReservationsList";
 import UpdateFields from "../components/UpdateFields";
@@ -32,10 +31,4 @@ class Index extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {};
-};
-
-export default withApollo(
-  withRedux(initStore, null, mapDispatchToProps)(Index)
-);
+export default withApollo(withRedux(initStore, null, null)(Index));

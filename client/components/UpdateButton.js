@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 import { graphql } from "react-apollo";
@@ -30,39 +30,25 @@ const updateReservation = gql`
 `;
 
 const UpdateButton = props => {
-  const canUpdate = () => {
-    const {
-      selectedReservationData: {
-        id,
-        name,
-        hotelName,
-        arrivalDate,
-        departureDate
-      }
-    } = props;
+  const {
+    selectedReservationData: { id, name, hotelName, arrivalDate, departureDate }
+  } = props;
 
+  if (!id) {
+    return null;
+  }
+
+  const canUpdate = () => {
     return (
       id &&
-      name != null &&
       name.trim().length > 0 &&
-      hotelName != null &&
       hotelName.trim().length > 0 &&
-      arrivalDate != null &&
-      departureDate != null
+      arrivalDate &&
+      departureDate
     );
   };
 
   const handleUpdate = () => {
-    const {
-      selectedReservationData: {
-        id,
-        name,
-        hotelName,
-        arrivalDate,
-        departureDate
-      }
-    } = props;
-
     props.updateReservation(
       id,
       name.trim(),
@@ -72,23 +58,21 @@ const UpdateButton = props => {
     );
   };
 
-  if (!canUpdate()) {
-    return null;
-  }
-  return <button onClick={handleUpdate}>Update Reservation</button>;
+  const disabled = !canUpdate();
+  return (
+    <button disabled={disabled} onClick={handleUpdate}>
+      Update Reservation
+    </button>
+  );
 };
 
 const mapStateToProps = ({ selectedReservationData }) => ({
   selectedReservationData
 });
 
-const mapDispatchToProps = dispatch => {
-  return {};
-};
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(
   graphql(updateReservation, {
     props: ({ mutate }) => ({

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { setSelectedReservationData } from "../lib/store";
@@ -55,10 +55,13 @@ const ReservationsList = props => {
           h1 {
             font-size: 16px;
           }
-          .selected {
-            background: #b3d6fd;
+          ul {
+            border: 1px solid #ececec;
+            margin: 0;
+            padding: 0.5rem 0.5rem 0 0.5rem;
           }
           li {
+            cursor: pointer;
             display: block;
             margin-bottom: 10px;
           }
@@ -66,21 +69,8 @@ const ReservationsList = props => {
             align-items: center;
             display: flex;
           }
-          a {
-            font-size: 14px;
-            margin-right: 10px;
-            text-decoration: none;
-            padding-bottom: 0;
-            border: 0;
-          }
-          span {
-            font-size: 14px;
-            margin-right: 5px;
-          }
-          ul {
-            border: 1px solid #ececec;
-            margin: 0;
-            padding: 0.5rem 0.5rem 0 0.5rem;
+          .selected {
+            background: #b3d6fd;
           }
         `}</style>
       </section>

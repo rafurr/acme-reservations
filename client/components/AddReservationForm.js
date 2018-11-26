@@ -1,3 +1,4 @@
+import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -31,20 +32,19 @@ const addReservation = gql`
 
 const AddReservationForm = props => {
   const {
-    name,
-    hotelName,
-    arrivalDate,
-    departureDate
-  } = props.addReservationData;
+    addReservationData: { name, hotelName, arrivalDate, departureDate }
+  } = props;
+
+  const canAdd = () => {
+    return (
+      name.trim().length > 0 &&
+      hotelName.trim().length > 0 &&
+      arrivalDate &&
+      departureDate
+    );
+  };
 
   const handleSubmit = event => {
-    const {
-      name,
-      hotelName,
-      arrivalDate,
-      departureDate
-    } = props.addReservationData;
-
     event.preventDefault();
 
     const form = event.target;
@@ -59,6 +59,8 @@ const AddReservationForm = props => {
 
     form.reset();
   };
+
+  const disabled = !canAdd();
 
   return (
     <form onSubmit={handleSubmit}>
@@ -141,7 +143,9 @@ const AddReservationForm = props => {
           }
         />
       </div>
-      <button type="submit">Add Reservation</button>
+      <button disabled={disabled} type="submit">
+        Add Reservation
+      </button>
       <style jsx>{`
         form {
           margin-bottom: 1rem;

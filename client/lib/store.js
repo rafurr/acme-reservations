@@ -11,10 +11,10 @@ const exampleInitialState = {
   },
   selectedReservationData: {
     id: "",
-    name: null,
-    hotelName: null,
-    arrivalDate: null,
-    departureDate: null,
+    name: "",
+    hotelName: "",
+    arrivalDate: "",
+    departureDate: "",
     isEditing: false
   }
 };
