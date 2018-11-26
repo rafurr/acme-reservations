@@ -1,0 +1,23 @@
+[
+  {
+    "id": "r0",
+    "name": "Robert Furr",
+    "hotelName": "Alpharetta Hilton",
+    "arrivalDate": "2018-11-25",
+    "departureDate": "2018-11-26"
+  },
+  {
+    "id": "r1",
+    "name": "Jack Bear",
+    "hotelName": "Miami Hilton",
+    "arrivalDate": "2018-11-25",
+    "departureDate": "2018-11-28"
+  },
+  {
+    "id": "r2",
+    "name": "Thomas Earl",
+    "hotelName": "New York Hilton",
+    "arrivalDate": "2018-12-10",
+    "departureDate": "2018-12-14"
+  }
+]
