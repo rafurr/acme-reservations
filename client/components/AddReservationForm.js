@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -30,12 +30,19 @@ const addReservation = gql`
   }
 `;
 
-const AddReservationForm = props => {
-  const {
-    addReservationData: { name, hotelName, arrivalDate, departureDate }
-  } = props;
+class AddReservationForm extends PureComponent {
+  constructor(props) {
+    super(props);
 
-  const canAdd = () => {
+    this.addReservation = props.addReservation;
+    this.setAddReservationData = props.setAddReservationData;
+  }
+
+  canAdd = () => {
+    const {
+      addReservationData: { name, hotelName, arrivalDate, departureDate }
+    } = this.props;
+
     return (
       name.trim().length > 0 &&
       hotelName.trim().length > 0 &&
@@ -44,13 +51,17 @@ const AddReservationForm = props => {
     );
   };
 
-  const handleSubmit = event => {
+  handleSubmit = event => {
+    const {
+      addReservationData: { name, hotelName, arrivalDate, departureDate }
+    } = this.props;
+
     event.preventDefault();
 
     const form = event.target;
 
-    props.addReservation(name, hotelName, arrivalDate, departureDate);
-    props.setAddReservationData({
+    this.addReservation(name, hotelName, arrivalDate, departureDate);
+    this.setAddReservationData({
       name: "",
       hotelName: "",
       arrivalDate: "",
@@ -60,115 +71,121 @@ const AddReservationForm = props => {
     form.reset();
   };
 
-  const disabled = !canAdd();
+  render() {
+    const {
+      addReservationData: { name, hotelName, arrivalDate, departureDate }
+    } = this.props;
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <h1>Add Reservation</h1>
-      <div>
-        <label htmlFor="name">Name</label>
-        <input
-          autoComplete="off"
-          placeholder="Enter Name"
-          name="name"
-          type="text"
-          required
-          value={name}
-          onChange={e =>
-            props.setAddReservationData({
-              name: e.target.value,
-              hotelName: hotelName,
-              arrivalDate: arrivalDate,
-              departureDate: departureDate
-            })
+    const disabled = !this.canAdd();
+
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <h1>Add Reservation</h1>
+        <div>
+          <label htmlFor="name">Name</label>
+          <input
+            autoComplete="off"
+            placeholder="Enter Name"
+            name="name"
+            type="text"
+            required
+            value={name}
+            onChange={e =>
+              this.props.setAddReservationData({
+                name: e.target.value,
+                hotelName: hotelName,
+                arrivalDate: arrivalDate,
+                departureDate: departureDate
+              })
+            }
+          />
+        </div>
+        <div>
+          <label htmlFor="hotelName">Hotel</label>
+          <input
+            autoComplete="off"
+            placeholder="Enter Hotel"
+            name="hotelName"
+            type="text"
+            required
+            value={hotelName}
+            onChange={e =>
+              this.props.setAddReservationData({
+                name: name,
+                hotelName: e.target.value,
+                arrivalDate: arrivalDate,
+                departureDate: departureDate
+              })
+            }
+          />
+        </div>
+        <div>
+          <label htmlFor="arrivalDate">Arrival Date</label>
+          <input
+            type="date"
+            name="arrivalDate"
+            min="2018-01-01"
+            max="2020-12-31"
+            required
+            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+            value={arrivalDate}
+            onChange={e =>
+              this.props.setAddReservationData({
+                name: name,
+                hotelName: hotelName,
+                arrivalDate: e.target.value,
+                departureDate: departureDate
+              })
+            }
+          />
+        </div>
+        <div>
+          <label htmlFor="departureDate">Departure Date</label>
+          <input
+            type="date"
+            name="departureDate"
+            min="2018-01-01"
+            max="2020-12-31"
+            required
+            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+            value={departureDate}
+            onChange={e =>
+              this.props.setAddReservationData({
+                name: name,
+                hotelName: hotelName,
+                arrivalDate: arrivalDate,
+                departureDate: e.target.value
+              })
+            }
+          />
+        </div>
+        <button disabled={disabled} type="submit">
+          Add Reservation
+        </button>
+        <style jsx>{`
+          form {
+            margin-bottom: 1rem;
           }
-        />
-      </div>
-      <div>
-        <label htmlFor="hotelName">Hotel</label>
-        <input
-          autoComplete="off"
-          placeholder="Enter Hotel"
-          name="hotelName"
-          type="text"
-          required
-          value={hotelName}
-          onChange={e =>
-            props.setAddReservationData({
-              name: name,
-              hotelName: e.target.value,
-              arrivalDate: arrivalDate,
-              departureDate: departureDate
-            })
+          h1 {
+            font-size: 16px;
           }
-        />
-      </div>
-      <div>
-        <label htmlFor="arrivalDate">Arrival Date</label>
-        <input
-          type="date"
-          name="arrivalDate"
-          min="2018-01-01"
-          max="2020-12-31"
-          required
-          pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
-          value={arrivalDate}
-          onChange={e =>
-            props.setAddReservationData({
-              name: name,
-              hotelName: hotelName,
-              arrivalDate: e.target.value,
-              departureDate: departureDate
-            })
+          label {
+            text-align: right;
+            display: inline-block;
+            margin-right: 0.5rem;
+            min-width: 110px;
+            font-size: 12px;
           }
-        />
-      </div>
-      <div>
-        <label htmlFor="departureDate">Departure Date</label>
-        <input
-          type="date"
-          name="departureDate"
-          min="2018-01-01"
-          max="2020-12-31"
-          required
-          pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
-          value={departureDate}
-          onChange={e =>
-            props.setAddReservationData({
-              name: name,
-              hotelName: hotelName,
-              arrivalDate: arrivalDate,
-              departureDate: e.target.value
-            })
+          input {
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            min-width: 200px;
           }
-        />
-      </div>
-      <button disabled={disabled} type="submit">
-        Add Reservation
-      </button>
-      <style jsx>{`
-        form {
-          margin-bottom: 1rem;
-        }
-        h1 {
-          font-size: 16px;
-        }
-        label {
-          text-align: right;
-          display: inline-block;
-          margin-right: 0.5rem;
-          min-width: 110px;
-          font-size: 12px;
-        }
-        input {
-          display: inline-block;
-          margin-bottom: 0.5rem;
-          min-width: 200px;
-        }
-      `}</style>
-    </form>
-  );
-};
+        `}</style>
+      </form>
+    );
+  }
+}
 
 const mapStateToProps = ({ addReservationData }) => ({
   addReservationData

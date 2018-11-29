@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import withRedux from "next-redux-wrapper";
 
 import withApollo from "../lib/withApollo";
@@ -12,7 +12,7 @@ import ReservationsList from "../components/ReservationsList";
 import UpdateFields from "../components/UpdateFields";
 import UpdateButton from "../components/UpdateButton";
 
-class Index extends React.Component {
+class Index extends Component {
   static getInitialProps({ store, isServer }) {
     // store.dispatch(init());
     return { isServer };

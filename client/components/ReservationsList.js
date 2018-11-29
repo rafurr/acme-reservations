@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { setSelectedReservationData } from "../lib/store";
@@ -21,63 +21,67 @@ export const getReservations = gql`
   }
 `;
 
-const ReservationsList = props => {
-  const handleSelect = item => {
-    props.setSelectedReservationData(Object.assign({ isEditing: false }, item));
+class ReservationsList extends PureComponent {
+  handleSelect = item => {
+    this.props.setSelectedReservationData(
+      Object.assign({ isEditing: false }, item)
+    );
   };
 
-  const {
-    selectedReservationData: { id },
-    data: { getReservations }
-  } = props;
+  render() {
+    const {
+      selectedReservationData: { id },
+      data: { getReservations }
+    } = this.props;
 
-  if (!getReservations || getReservations.error)
-    return <ErrorMessage message="Error loading posts." />;
+    if (!getReservations || getReservations.error)
+      return <ErrorMessage message="Error loading posts." />;
 
-  if (getReservations && getReservations.length) {
-    return (
-      <section>
-        <h1>Reservations</h1>
-        <ul>
-          {getReservations.map((item, index) => (
-            <li key={item.id} onClick={e => handleSelect(item)}>
-              <div className={id === item.id ? "selected" : ""}>
-                {item.name} | {item.hotelName} | Arrival: {item.arrivalDate} |
-                Departure: {item.departureDate}
-              </div>
-            </li>
-          ))}
-        </ul>
-        <style jsx>{`
-          section {
-            margin-bottom: 1rem;
-          }
-          h1 {
-            font-size: 16px;
-          }
-          ul {
-            border: 1px solid #ececec;
-            margin: 0;
-            padding: 0.5rem 0.5rem 0 0.5rem;
-          }
-          li {
-            cursor: pointer;
-            display: block;
-            margin-bottom: 10px;
-          }
-          div {
-            align-items: center;
-            display: flex;
-          }
-          .selected {
-            background: #b3d6fd;
-          }
-        `}</style>
-      </section>
-    );
+    if (getReservations && getReservations.length) {
+      return (
+        <section>
+          <h1>Reservations</h1>
+          <ul>
+            {getReservations.map((item, index) => (
+              <li key={item.id} onClick={e => this.handleSelect(item)}>
+                <div className={id === item.id ? "selected" : ""}>
+                  {item.name} | {item.hotelName} | Arrival: {item.arrivalDate} |
+                  Departure: {item.departureDate}
+                </div>
+              </li>
+            ))}
+          </ul>
+          <style jsx>{`
+            section {
+              margin-bottom: 1rem;
+            }
+            h1 {
+              font-size: 16px;
+            }
+            ul {
+              border: 1px solid #ececec;
+              margin: 0;
+              padding: 0.5rem 0.5rem 0 0.5rem;
+            }
+            li {
+              cursor: pointer;
+              display: block;
+              margin-bottom: 10px;
+            }
+            div {
+              align-items: center;
+              display: flex;
+            }
+            .selected {
+              background: #b3d6fd;
+            }
+          `}</style>
+        </section>
+      );
+    }
+    return <div>Loading</div>;
   }
-  return <div>Loading</div>;
-};
+}
 
 const mapStateToProps = ({ selectedReservationData }) => ({
   selectedReservationData
